@@ -1,6 +1,7 @@
 package com.example.mobil_negyedik_ora;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -25,6 +26,19 @@ public class MainActivity extends AppCompatActivity {
        itemsTextView = findViewById(R.id.itemsTextView);
     }
 
+    private ActivityResultLauncher <Intent> activityResultSearch =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == RESULT_OK) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW,
+                                    Uri.parse("https://www.google.com/search?q=" + result.getData().getStringExtra(ItemsActivity.ITEM_KEY)));
+                            startActivity(intent);
+
+                        }
+                    }
+            );
+
     private ActivityResultLauncher<Intent> activityResultLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
@@ -43,5 +57,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void searchButtonClicked(View view) {
+        Intent intent = new Intent(this, ItemsActivity.class);
+        activityResultSearch.launch(intent);
     }
 }

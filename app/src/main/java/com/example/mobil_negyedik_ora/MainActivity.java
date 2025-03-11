@@ -25,4 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void addButtonClicked(View view) {
     }
+
+    public void searchButtonClicked(View view) {
+    }
 }

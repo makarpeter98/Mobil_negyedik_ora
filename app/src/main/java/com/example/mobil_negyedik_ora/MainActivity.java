@@ -6,6 +6,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -22,9 +25,21 @@ public class MainActivity extends AppCompatActivity {
        itemsTextView = findViewById(R.id.itemsTextView);
     }
 
+    private ActivityResultLauncher<Intent> activityResultLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == RESULT_OK) {
+                            if (itemsTextView.getText().toString().equals(getString(R.string.empty_list)))
+                                itemsTextView.setText("");
+                            itemsTextView.append(result.getData().getStringExtra(ItemsActivity.ITEM_KEY) + "\n");
+                        }
+                    }
+            );
     public void addButtonClicked(View view) {
         Intent intent = new Intent(this, ItemsActivity.class);
-        startActivity(intent);
+        //startActivity(intent);
+        activityResultLauncher.launch(intent);
     }
 
     public void searchButtonClicked(View view) {

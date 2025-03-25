@@ -25,15 +25,29 @@ public class MainActivity extends AppCompatActivity {
 
     // Óra teszt!
 
-    TextView itemsTextView;
+    TextView itemsList;
+    private static final String STATE_KEY_ISLISTEMPTY = "hu.unideb.inf.mobil.islistempty";
+    private static final String STATE_KEY_ITEMS_LIST_TEXTVIEW = "hu.unideb.inf.mobil.itemslisttextview";
+    private boolean isListEmpty = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);
        setContentView(R.layout.activity_main);
-       itemsTextView = findViewById(R.id.itemsList);
+       itemsList = findViewById(R.id.itemsList);
+       if(savedInstanceState != null)
+       {
+           isListEmpty = savedInstanceState.getBoolean(STATE_KEY_ISLISTEMPTY);
+           itemsList.setText(savedInstanceState.getString(STATE_KEY_ITEMS_LIST_TEXTVIEW));
+       }
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_KEY_ISLISTEMPTY, isListEmpty);
+        outState.putString(STATE_KEY_ITEMS_LIST_TEXTVIEW, itemsList.getText().toString());
+    }
     private ActivityResultLauncher <Intent> activityResultSearch =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
@@ -52,9 +66,9 @@ public class MainActivity extends AppCompatActivity {
                     new ActivityResultContracts.StartActivityForResult(),
                     result -> {
                         if (result.getResultCode() == RESULT_OK) {
-                            if (itemsTextView.getText().toString().equals(getString(R.string.empty_list)))
-                                itemsTextView.setText("");
-                            itemsTextView.append(result.getData().getStringExtra(ItemsActivity.ITEM_KEY) + "\n");
+                            if (itemsList.getText().toString().equals(getString(R.string.empty_list)))
+                                itemsList.setText("");
+                            itemsList.append(result.getData().getStringExtra(ItemsActivity.ITEM_KEY) + "\n");
                         }
                     }
             );

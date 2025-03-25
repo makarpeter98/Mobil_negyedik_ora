@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ItemsActivity extends AppCompatActivity {
 
-    public static String ITEM_KEY = "hu.unideb.inf.mobil.item_key.default";
-
+    //public static String ITEM_KEY = "hu.unideb.inf.mobil.item_key.default";
+    public static String ITEM_KEY = "ITEM";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

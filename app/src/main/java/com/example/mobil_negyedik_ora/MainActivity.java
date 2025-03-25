@@ -1,21 +1,29 @@
 package com.example.mobil_negyedik_ora;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
-
-import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.core.app.ActivityOptionsCompat;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class MainActivity extends AppCompatActivity {
+
+    // Óra teszt!
 
     TextView itemsTextView;
 
@@ -23,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);
        setContentView(R.layout.activity_main);
-       itemsTextView = findViewById(R.id.itemsTextView);
+       itemsTextView = findViewById(R.id.itemsList);
     }
 
     private ActivityResultLauncher <Intent> activityResultSearch =

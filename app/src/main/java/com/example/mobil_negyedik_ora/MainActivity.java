@@ -23,32 +23,78 @@ import java.net.URLEncoder;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Óra teszt!
+    ActivityResultLauncher activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult reply) {
+                    if (reply.getResultCode() == RESULT_OK) {
+                        if (itemsTextView.getText().toString().equals(getString(R.string.no_items)))
+                            itemsTextView.setText("");
+                        itemsTextView.append(reply.getData().getStringExtra("ITEM") + "\n");
+                    }
+                }
+            }
+    );
 
-    TextView itemsList;
-    private static final String STATE_KEY_ISLISTEMPTY = "hu.unideb.inf.mobil.islistempty";
-    private static final String STATE_KEY_ITEMS_LIST_TEXTVIEW = "hu.unideb.inf.mobil.itemslisttextview";
-    private boolean isListEmpty = true;
+    TextView itemsTextView;
+    Button addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-       super.onCreate(savedInstanceState);
-       setContentView(R.layout.activity_main);
-       itemsList = findViewById(R.id.itemsList);
-       if(savedInstanceState != null)
-       {
-           isListEmpty = savedInstanceState.getBoolean(STATE_KEY_ISLISTEMPTY);
-           itemsList.setText(savedInstanceState.getString(STATE_KEY_ITEMS_LIST_TEXTVIEW));
-       }
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        addButton = findViewById(R.id.addButton);
+        itemsTextView = findViewById(R.id.itemsList);
+        addButton.setOnClickListener(
+                //v -> startActivity(new Intent(this, ItemsActivity.class))
+                v -> activityResultLauncher.launch(new Intent(this, ItemsActivity.class))
+        );
     }
 
+    /*private static final String STATE_KEY_ISLISTEMPTY = "hu.unideb.inf.mobil.islistempty";
+    private static final String STATE_KEY_ITEMS_LIST_TEXTVIEW = "hu.unideb.inf.mobil.itemslisttextview";
+    TextView itemList;
+	private boolean isListEmpty = true;
+
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        itemList = findViewById(R.id.itemsList);
+
+		if(savedInstanceState != null)
+		{
+			isListEmpty = savedInstanceState.getBoolean(STATE_KEY_ISLISTEMPTY);
+			itemList.setText(savedInstanceState.getString(STATE_KEY_ITEMS_LIST_TEXTVIEW));
+		}
+    }
+
+	@Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_KEY_ISLISTEMPTY, isListEmpty);
-        outState.putString(STATE_KEY_ITEMS_LIST_TEXTVIEW, itemsList.getText().toString());
+        outState.putBoolean(STATE_KEY_ISLISTEMPTY,  isListEmpty);
+        outState.putString(STATE_KEY_ITEMS_LIST_TEXTVIEW, itemList.getText().toString());
     }
-    private ActivityResultLauncher <Intent> activityResultSearch =
+
+    private ActivityResultLauncher<Intent> activityResultLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == RESULT_OK) {
+                            if (itemList.getText().toString().equals(getString(R.string.empty_list)))
+							{
+
+                                itemList.setText("");
+								isListEmpty = false;
+							}
+                            itemList.append(result.getData().getStringExtra(ItemsActivity.ITEM_KEY) + "\n");
+                        }
+                    }
+            );
+
+    private ActivityResultLauncher<Intent> activityResultLauncherSearch =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
                     result -> {
@@ -56,19 +102,6 @@ public class MainActivity extends AppCompatActivity {
                             Intent intent = new Intent(Intent.ACTION_VIEW,
                                     Uri.parse("https://www.google.com/search?q=" + result.getData().getStringExtra(ItemsActivity.ITEM_KEY)));
                             startActivity(intent);
-
-                        }
-                    }
-            );
-
-    private ActivityResultLauncher<Intent> activityResultLauncher =
-            registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-                    result -> {
-                        if (result.getResultCode() == RESULT_OK) {
-                            if (itemsList.getText().toString().equals(getString(R.string.empty_list)))
-                                itemsList.setText("");
-                            itemsList.append(result.getData().getStringExtra(ItemsActivity.ITEM_KEY) + "\n");
                         }
                     }
             );
@@ -80,6 +113,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void searchButtonClicked(View view) {
         Intent intent = new Intent(this, ItemsActivity.class);
-        activityResultSearch.launch(intent);
-    }
+        activityResultLauncherSearch.launch(intent);
+    }*/
 }

@@ -1,16 +1,18 @@
 package com.example.mobil_negyedik_ora;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 public class ItemsActivity extends AppCompatActivity {
 
-    //public static String ITEM_KEY = "hu.unideb.inf.mobil.item_key.default";
+    //public static String ITEM_KEY = "hu.unideb.inf.android.item_key.default";
     public static String ITEM_KEY = "ITEM";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

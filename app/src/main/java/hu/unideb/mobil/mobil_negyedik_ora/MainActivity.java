@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     TextView itemsTextView;
     Button addButton;
     Button deleteButton;
+    
+    //teszt
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

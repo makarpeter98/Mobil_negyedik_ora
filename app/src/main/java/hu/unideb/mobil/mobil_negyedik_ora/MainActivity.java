@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         itemsTextView = findViewById(R.id.itemsTextView);
 
         addButton.setOnClickListener( v -> activityResultLauncher.launch(new Intent(this, ItemsActivity.class)) );
-
+        deleteButton.setOnClickListener(v -> {itemsTextView.setText(getString(R.string.no_items));});
     }
 
     ActivityResultLauncher activityResultLauncher = registerForActivityResult(

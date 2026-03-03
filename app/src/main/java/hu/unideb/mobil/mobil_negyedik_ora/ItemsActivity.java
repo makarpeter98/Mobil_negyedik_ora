@@ -19,4 +19,11 @@ public class ItemsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_items);
     }
 
+    public void addItem(View view)
+    {
+        Intent replyIntent = new Intent();
+        replyIntent.putExtra(ITEM_KEY, ((Button)view).getText());
+        setResult(RESULT_OK, replyIntent);
+        finish();
+    }
 }

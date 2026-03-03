@@ -23,19 +23,33 @@ public class MainActivity extends AppCompatActivity {
     TextView itemsTextView;
     Button addButton;
     Button deleteButton;
-    
-    //teszt
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*addButton = findViewById(R.id.addButton);
+        addButton = findViewById(R.id.addButton);
         deleteButton = findViewById(R.id.deleteButton);
-        itemsTextView = findViewById(R.id.itemsTextView);*/
+        itemsTextView = findViewById(R.id.itemsTextView);
 
-        //addButton.setOnClickListener( v -> activityResultLauncher.launch(new Intent(this, ItemsActivity.class)) );
-        //deleteButton.setOnClickListener(v -> { itemsTextView.setText(getString(R.string.no_items)); });
+        addButton.setOnClickListener( v -> activityResultLauncher.launch(new Intent(this, ItemsActivity.class)) );
+
     }
+
+    ActivityResultLauncher activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult reply) {
+                    Log.d("teszt", "activityResultLauncher");
+                    if(reply.getResultCode() == RESULT_OK)
+                    {
+                        if(itemsTextView.getText().toString().equals(getString(R.string.no_items)))
+                            itemsTextView.setText("");
+                        itemsTextView.append(reply.getData().getStringExtra("ITEM") + "\n");
+                    }
+                }
+            }
+    );
 }
